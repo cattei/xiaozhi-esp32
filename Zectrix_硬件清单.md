@@ -22,7 +22,7 @@
 | 项目 | 型号/参数 | 引脚 | 来源文件 |
 |---|---|---|---|
 | **屏幕类型** | 4.2 英寸 E-ink 电子墨水屏 | — | config.h |
-| **屏幕驱动 IC** | **SSD1683** | — | custom_lcd_display.h 第113行注释 + 初始化命令 |
+| **屏幕驱动 IC** | **SSD1683** | — | custom_lcd_display.h 第113行 `// SSD1683 helpers` + 初始化命令 |
 | **分辨率** | 400 × 300（横屏） | — | config.h `EXAMPLE_LCD_WIDTH/HEIGHT` |
 | **显示颜色** | 黑白双色（1bpp） | — | custom_lcd_display.h `COLOR_IMAGE` |
 | **刷新方式** | 全刷 + 局刷（2bpp交织） | — | custom_lcd_display.cc |
@@ -69,7 +69,7 @@
 | 项目 | 型号/参数 | 引脚 | 来源文件 |
 |---|---|---|---|
 | **音频编解码** | **ES8311** | — | config.h `AUDIO_CODEC_ES8311_ADDR` |
-| **I2C 地址** | ES8311 默认地址 | — | config.h |
+| **I2C 地址** | 0x18（ES8311_CODEC_DEFAULT_ADDR） | — | config.h `AUDIO_CODEC_ES8311_ADDR` |
 | **I2C SDA** | GPIO47 | AUDIO_CODEC_I2C_SDA_PIN | config.h |
 | **I2C SCL** | GPIO48 | AUDIO_CODEC_I2C_SCL_PIN | config.h |
 | **I2S 主时钟** | GPIO14 | AUDIO_I2S_GPIO_MCLK | config.h |
@@ -145,9 +145,10 @@ Bit 0 = TIE (Timer Interrupt Enable)
 
 | 项目 | 引脚 | 功能 | 来源文件 |
 |---|---|---|---|
-| **确认/BOOT** | GPIO0 | 短按确认，长按 1000ms | config.h `BOOT_BUTTON_GPIO` / `TODO_CONFIRM_BUTTON_GPIO` |
+| **BOOT/对话** | GPIO0 | 短按触发对话 | config.h `BOOT_BUTTON_GPIO` / `TODO_CONFIRM_BUTTON_GPIO` |
 | **上翻页** | GPIO39 | 短按触发 | config.h `TODO_UP_BUTTON_GPIO` |
-| **下翻页/电源** | GPIO18 | 短按触发（与电源键复用） | config.h `TODO_DOWN_BUTTON_GPIO` / `VBAT_PWR_GPIO` |
+| **下翻页/重启** | GPIO18 | 短按重启设备 | config.h `TODO_DOWN_BUTTON_GPIO` |
+| **VBAT 电源检测** | GPIO18 | 检测 VBAT 电源是否稳定（开机电源键与下键复用） | config.h `VBAT_PWR_GPIO` |
 
 ---
 
@@ -185,7 +186,7 @@ computed_percent = (-1 * V² + 9016 * V - 19189000) / 10000
 
 | 状态 | GPIO3 行为 |
 |---|---|
-| 充电中 | 闪烁（200ms 亮 / 2800ms 灭） |
+| 充电中 | 闪烁（200ms 灭 / 2800ms 亮） |
 | 充满 | 常灭（低电平） |
 | 空闲 | 常亮（高电平） |
 | 工厂测试闪烁 | 500ms 周期翻转 |
@@ -209,7 +210,7 @@ computed_percent = (-1 * V² + 9016 * V - 19189000) / 10000
 
 | GPIO | 方向 | 功能 | 备注 |
 |---|---|---|---|
-| GPIO0 | 输入 | BOOT/确认按钮 | 长按 1000ms |
+| GPIO0 | 输入 | BOOT/对话按钮 | 短按触发对话 |
 | GPIO1 | 输入 | 充满检测 | 高电平=充满 |
 | GPIO2 | 输入 | 充电检测 | 低电平=充电中 |
 | GPIO3 | 输出 | 状态 LED | 充电/状态指示 |
@@ -227,7 +228,7 @@ computed_percent = (-1 * V² + 9016 * V - 19189000) / 10000
 | GPIO15 | 输出 | I2S 位时钟 | 音频用 |
 | GPIO16 | 输入 | I2S 录音输入 | 麦克风 |
 | GPIO17 | 输出 | 系统总电源 | 高电平=开 |
-| GPIO18 | 输入 | 下翻页/电源键 | 复用 |
+| GPIO18 | 输入 | 下翻页/重启按钮 / VBAT 电源检测 | 短按重启设备（VBAT_PWR_GPIO） |
 | GPIO21 | 输出 | NFC 电源 | 高电平=开 |
 | GPIO38 | 输出 | I2S 字选择 | 音频用 |
 | GPIO39 | 输入 | 上翻页按钮 | — |

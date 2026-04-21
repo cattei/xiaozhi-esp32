@@ -829,13 +829,13 @@ void LcdDisplay::SetupUI() {
     lv_obj_set_style_bg_color(container_, lvgl_theme->background_color(), 0);
     lv_obj_set_style_border_color(container_, lvgl_theme->border_color(), 0);
 
-    /* Bottom layer: emoji_box_ - centered display */
+    /* Bottom layer: emoji_box_ - top area display */
     emoji_box_ = lv_obj_create(screen);
     lv_obj_set_size(emoji_box_, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
     lv_obj_set_style_bg_opa(emoji_box_, LV_OPA_TRANSP, 0);
     lv_obj_set_style_pad_all(emoji_box_, 0, 0);
     lv_obj_set_style_border_width(emoji_box_, 0, 0);
-    lv_obj_align(emoji_box_, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_align(emoji_box_, LV_ALIGN_TOP_MID, 0, LV_VER_RES / 5);
 
     emoji_label_ = lv_label_create(emoji_box_);
     lv_obj_set_style_text_font(emoji_label_, large_icon_font, 0);
@@ -925,10 +925,11 @@ void LcdDisplay::SetupUI() {
     lv_obj_align(status_label_, LV_ALIGN_CENTER, 0, 0);
 
 #if CONFIG_USE_MULTILINE_CHAT_MESSAGE
-    /* Bottom bar - auto height, grows upward with wrapped text */
+    /* Bottom bar - up to 60% screen height, grows upward with wrapped text */
     bottom_bar_ = lv_obj_create(screen);
     lv_obj_set_width(bottom_bar_, LV_HOR_RES);
     lv_obj_set_height(bottom_bar_, LV_SIZE_CONTENT);
+    lv_obj_set_style_max_height(bottom_bar_, LV_VER_RES * 3 / 5, 0);
     lv_obj_set_style_radius(bottom_bar_, 0, 0);
     lv_obj_set_style_bg_color(bottom_bar_, lvgl_theme->background_color(), 0);
     lv_obj_set_style_bg_opa(bottom_bar_, LV_OPA_50, 0);

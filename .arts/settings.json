@@ -1,3 +1,4 @@
 {
-    "idf.currentSetup": "C:/Espressif/frameworks/esp-idf-v5.4.1/"
+    "idf.currentSetup": "C:/Espressif/frameworks/esp-idf-v5.4.1/",
+    "diffEditor.renderSideBySide": false
 }
